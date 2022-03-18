@@ -12,3 +12,8 @@
 ### Requirements freeze
 
     pip freeze > requirements.txt
+    pyclean .
+
+========================================
+
+        uvicorn main:app --reload

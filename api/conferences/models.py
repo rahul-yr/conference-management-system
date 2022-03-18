@@ -1,64 +1,45 @@
-from app import db
 from datetime import date
+from sqlalchemy import Table, Column, Integer, String, Date, DateTime, ForeignKey
+# from api.config.database import Base
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
+
 
 # create a table for conferences
+class Conference(Base):
+    __tablename__ = 'conferences'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(50), nullable=False)
+    description = Column(String(250), nullable=False)
+    start_date = Column(Date, nullable=False)
+    end_date = Column(Date, nullable=False)
 
 
-class Conference(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
-    start_date = db.Column(db.DateTime, nullable=False)
-    end_date = db.Column(db.DateTime, nullable=False)
+class Talk(Base):
+    __tablename__ = 'talks'
 
-    def __repr__(self):
-        return '<Conference %r>' % self.title
-
-
-# create a table for talks
-class Talk(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
-    start_datetime = db.Column(db.DateTime, nullable=False)
-    conference_id = db.Column(db.Integer, db.ForeignKey('conference.id'))
-
-    def __repr__(self):
-        return '<Talk %r>' % self.title
+    id = Column(Integer, primary_key=True)
+    title = Column(String(50), nullable=False)
+    description = Column(String(250), nullable=False)
+    duration = Column(Integer, nullable=False)
+    start_datetime = Column(DateTime, nullable=False)
+    conference_id = Column(Integer, ForeignKey('conferences.id'))
 
 
-# create a table for users
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), nullable=False)
-    email = db.Column(db.String(80), nullable=False)
+class Speakers(Base):
+    __tablename__ = 'speakers'
 
-    def __repr__(self):
-        return '<User %r>' % self.username
-
-# create a table for speakersList
+    id = Column(Integer, primary_key=True)
+    username = Column(String(50), nullable=False)
+    email = Column(String(50), nullable=False)
+    talk_id = Column(Integer, ForeignKey('talks.id'))
 
 
-# class Speaker(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     # create a field talk_id
-#     talk_id = db.Column(db.Integer, db.ForeignKey('talk.id'))
-#     # create a field of type list of users
-#     users = db.relationship(
-#         'User', secondary='speaker_user', backref='speakers')
+class Participants(Base):
+    __tablename__ = 'participants'
 
-#     def __repr__(self):
-#         return '<Speaker %r>' % self.id.username
-
-
-# # create a table for participants
-# class Participant(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     # create a field talk_id
-#     talk_id = db.Column(db.Integer, db.ForeignKey('talk.id'))
-#     # create a field of type list of users
-#     users = db.relationship(
-#         'User', secondary='participant_user', backref='participants')
-
-#     def __repr__(self):
-#         return '<Participant %r>' % self.id.username
+    id = Column(Integer, primary_key=True)
+    username = Column(String(50), nullable=False)
+    email = Column(String(50), nullable=False)
+    talk_id = Column(Integer, ForeignKey('talks.id'))
