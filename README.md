@@ -1,5 +1,11 @@
 # conference-management-system
 
+## Important information
+
+        Please update `_address` variable according to your SQL server details at api/config/database.py
+
+        Use `queries.sql` file for Creating required tables
+
 ## Available endpoints
 
         Create a conference   http://127.0.0.1:8000/api/conferences/create
