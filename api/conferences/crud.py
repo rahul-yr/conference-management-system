@@ -67,9 +67,9 @@ def update_conference(db: Session, conference: schemas.UpdateConference) -> Conf
 
 
 # talks
-def get_all_talks(db: Session) -> list[Talk]:
+def get_all_talks(db: Session, conference_id: int) -> list[Talk]:
     try:
-        return db.query(Talk).all()
+        return db.query(Talk).filter(Talk.conference_id == conference_id).all()
     except Exception as e:
         response = JSONResponse(
             {"error": "Something went wrong"}, status_code=500)

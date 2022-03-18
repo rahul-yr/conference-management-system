@@ -27,9 +27,9 @@ async def update_conference(conference: schemas.UpdateConference, db: Session = 
 # talks
 
 
-@users_router.get("/talk/all", response_model=list[schemas.ViewTalk])
-async def get_all_talks(db: Session = Depends(get_db_instance)):
-    return crud.get_all_talks(db)
+@users_router.get("/talk/all/{id}", response_model=list[schemas.ViewTalk])
+async def get_all_talks(id: int, db: Session = Depends(get_db_instance)):
+    return crud.get_all_talks(db, conference_id=id)
 
 
 @users_router.post("/talk/create", response_model=schemas.ViewTalk)
